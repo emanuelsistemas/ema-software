@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acesso Remoto - Solução Completa</title>
-    <link rel="icon" type="image/svg+xml" href="/remote-access.svg">
+    <link rel="icon" type="image/svg+xml" href="remote-access.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script src="/download-arrow.js" defer></script>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -285,9 +284,45 @@
             font-weight: 400;
             color: var(--text-primary);
             letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .company a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            padding: 5px 10px;
+        }
+
+        .company a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .company a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .company a:hover {
+            text-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+            letter-spacing: 1px;
         }
         
-        /* Seta apontando para o botão de download do Chrome */
         .browser-download-arrow {
             position: fixed;
             top: -15px;
@@ -298,8 +333,8 @@
             padding: 0;
             border: 0;
             z-index: 9999;
-            display: none; /* Inicialmente oculta */
-            pointer-events: none; /* Garante que não interfira com clicks */
+            display: none;
+            pointer-events: none;
             filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.7));
             animation: arrowPulse 1.5s infinite;
             overflow: visible;
@@ -459,8 +494,6 @@
                 </div>
             </div>
         </div>
-        
-
     </div>
 
     <footer>
@@ -471,50 +504,38 @@
             <span>Suporte técnico profissional</span>
         </div>
         <p>Escolha a ferramenta de sua preferência para iniciar o acesso remoto</p>
-        <p class="company"><a href="https://emasoftware.io/" target="_blank" style="color: inherit; text-decoration: none; transition: color 0.3s ease;">ema-software</a></p>
+        <p class="company"><a href="https://emasoftware.app" target="_blank">ema-software</a></p>
     </footer>
 
-    <!-- Overlay escuro para destacar a seta -->
     <div class="dark-overlay" id="dark-overlay"></div>
-
-    <!-- Seta fina na posição final ajustada -->    
     <div class="browser-download-arrow" id="browser-download-arrow">
         <svg width="80" height="120" viewBox="0 0 40 80" style="position: absolute; top: 0;">
-            <!-- Seta com traço vertical e ponta triangular, mais fina -->
             <line x1="25" y1="30" x2="25" y2="70" stroke="#FFFF00" stroke-width="5" stroke-linecap="round" />
             <polygon points="25,15 15,30 35,30" fill="#FFFF00" />
         </svg>
     </div>
 
     <script>
-        // Script para mostrar a seta apontando para o botão de download do Chrome
         document.addEventListener('DOMContentLoaded', function() {
-            // Selecionar especificamente os cards
             const rustdeskCard = document.getElementById('rustdesk-card');
             const anydeskCard = document.getElementById('anydesk-card');
             
             const browserArrow = document.getElementById('browser-download-arrow');
             const darkOverlay = document.getElementById('dark-overlay');
             
-            // Função para ativar o efeito de seta sem parâmetros
             function mostrarSeta() {
-                // Mostrar a seta e o overlay escuro
                 browserArrow.style.display = 'block';
                 darkOverlay.style.display = 'block';
                 
-                // Esconder a seta e o overlay após 10 segundos
                 setTimeout(function() {
                     browserArrow.style.display = 'none';
                     darkOverlay.style.display = 'none';
                 }, 10000);
             }
             
-            // Função para iniciar o download do card correspondente
             function iniciarDownload(card) {
-                // Encontrar o link de download dentro do card
                 const downloadBtn = card.querySelector('.download-btn');
                 if (downloadBtn && downloadBtn.href) {
-                    // Cria um elemento de link temporário para simular o clique
                     const tempLink = document.createElement('a');
                     tempLink.href = downloadBtn.href;
                     tempLink.download = downloadBtn.download || '';
@@ -525,20 +546,14 @@
                 }
             }
             
-            // Função para ativar o efeito de seta ao clicar no card
             function ativarEfeitoSeta(e) {
-                // Obter o card que foi clicado
                 const card = e.currentTarget;
                 
-                // Não impedir o comportamento padrão para botões de download
-                // pois queremos que o download ocorra
                 if (e.target.closest('.download-btn')) {
-                    // Ativar o efeito de seta E permitir o download
                     mostrarSeta();
-                    return; // Não bloqueia o evento, permitindo que o download ocorra
+                    return;
                 }
                 
-                // Para outros links, não ativar o efeito
                 if (e.target.closest('a[href]') && !e.target.closest('.download-btn')) {
                     return;
                 }
@@ -546,23 +561,19 @@
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Iniciar o download e mostrar a seta
                 iniciarDownload(card);
                 mostrarSeta();
             }
             
-            // Adicionar evento de clique ao card do RustDesk
             if (rustdeskCard) {
                 rustdeskCard.addEventListener('click', ativarEfeitoSeta);
             }
             
-            // Adicionar evento de clique ao card do AnyDesk
             if (anydeskCard) {
                 anydeskCard.addEventListener('click', ativarEfeitoSeta);
             }
         });
         
-        // Executar imediatamente se o documento já estiver carregado
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             const event = new Event('DOMContentLoaded');
             document.dispatchEvent(event);
